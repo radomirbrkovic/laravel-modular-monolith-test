@@ -16,7 +16,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ../:/var/www/html
+      - ./:/var/www/html
       - ./docker/data/var/log/nginx:/var/log/nginx
       - ./docker/config/nginx/conf.d:/etc/nginx/conf.d
     links:
@@ -30,5 +30,5 @@ services:
       dockerfile: docker/build/php/Dockerfile
     container_name: 'php-modular-monolith-test'
     volumes:
-      - ../:/var/www/html
+      - ./:/var/www/html
       - ./docker/config/fpm/conf.d:/usr/local/etc/php/conf.d
