@@ -50,13 +50,14 @@ class VenueController extends Controller
         return new VenueResource($this->service->update($id, $request->validated()));
     }
 
+
     /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Foundation\Application|Response
      */
     public function destroy($id)
     {
-        //
+        $this->service->delete($id);
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }

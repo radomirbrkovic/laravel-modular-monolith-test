@@ -92,4 +92,14 @@ class VenueCrudTest extends BaseTestCase
                 'data.capacity' => $payload['capacity'],
             ])->etc());
     }
+
+    public function testCanDelete(): void
+    {
+
+        $this->deleteJson(action([VenueController::class, 'destroy'], ['venue' => 1]))
+            ->assertStatus(204);
+
+        $venue = Venue::find(1);
+        $this->assertNull($venue);
+    }
 }
