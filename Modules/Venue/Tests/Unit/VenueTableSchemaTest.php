@@ -20,4 +20,11 @@ class VenueTableSchemaTest extends TestCase
     {
         $this->assertTrue(Schema::hasTable($this->model->getTable()));
     }
+
+    public function testVenuesTableHasCorrectColumns(): void
+    {
+        $this->assertTrue(Schema::hasColumns($this->model->getTable(),
+            $this->model->getFillable()
+        ));
+    }
 }
