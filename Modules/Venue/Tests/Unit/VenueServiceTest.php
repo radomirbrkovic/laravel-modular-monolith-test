@@ -97,4 +97,18 @@ class VenueServiceTest extends TestCase
         $this->assertEquals($updatedVenue->name, $venue->name);
         $this->assertEquals($updatedVenue->capacity, $venue->capacity);
     }
+
+    public function testCanDeleteVenue(): void
+    {
+        $venueEntity = $this->makeModel([
+            'name' => 'Test venue',
+            'capacity' => 50,
+            'id' => 1
+        ]);
+
+        $this->repository->shouldReceive('find')->once()->andReturn($venueEntity);
+        $this->repository->shouldReceive('delete')->once()->andReturn(true);
+        $this->assertTrue($this->service->delete(1));
+
+    }
 }
