@@ -73,4 +73,28 @@ class VenueServiceTest extends TestCase
         $this->assertEquals($venueEntity->name, $venue->name);
         $this->assertEquals($venueEntity->capacity, $venue->capacity);
     }
+
+    public function testCanUpdateVenue(): void
+    {
+        $venueEntity = $this->makeModel([
+            'name' => 'Test venue',
+            'capacity' => 50,
+            'id' => 1
+        ]);
+
+        $data = [
+            'name' => 'Test venue updated',
+            'capacity' => 100,
+            'id' => 1
+        ];
+        $updatedVenue = $this->makeModel($data);
+        $this->repository->shouldReceive('find')->once()->andReturn($venueEntity);
+        $this->repository->shouldReceive('update')->once()->andReturn($updatedVenue);
+        $venue = $this->service->update($data['id'], $data);
+
+        $this->assertInstanceOf(Venue::class, $venue);
+        $this->assertEquals($venueEntity->id, $venue->id);
+        $this->assertEquals($updatedVenue->name, $venue->name);
+        $this->assertEquals($updatedVenue->capacity, $venue->capacity);
+    }
 }
