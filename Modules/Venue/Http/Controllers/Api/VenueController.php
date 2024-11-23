@@ -4,7 +4,9 @@ namespace Modules\Venue\Http\Controllers\Api;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Venue\Http\Requests\Api\VenueRequest;
 use Modules\Venue\Services\VenueCrudService;
 use Modules\Venue\Transformers\VenueResource;
 
@@ -30,14 +32,11 @@ class VenueController extends Controller
         return view('venue::create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
-     */
-    public function store(Request $request)
+
+    public function store(VenueRequest $request)
     {
-        //
+        $venue = $this->service->create($request->validated());
+        return (new VenueResource($venue))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**

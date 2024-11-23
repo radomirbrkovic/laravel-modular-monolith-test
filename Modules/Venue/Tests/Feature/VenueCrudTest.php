@@ -29,11 +29,42 @@ class VenueCrudTest extends BaseTestCase
 
         $this->getJson(action([VenueController::class, 'index']))
             ->assertOk()
-        ->assertJson(fn (AssertableJson $json) => $json->has('data')->whereAllType([
-            'data.0.id' => 'integer',
-            'data.0.name' => 'string',
-            'data.0.capacity' => 'integer',
-        ])->etc())
-        ->assertJson(fn (AssertableJson $json) => $json->has('data')->whereAll($venuesData)->etc());
+            ->assertJson(fn(AssertableJson $json) => $json->has('data')->whereAllType([
+                'data.0.id' => 'integer',
+                'data.0.name' => 'string',
+                'data.0.capacity' => 'integer',
+            ])->etc())
+            ->assertJson(fn(AssertableJson $json) => $json->has('data')->whereAll($venuesData)->etc());
+    }
+
+
+    public function testCanCreateVenueInvalidData(): void
+    {
+        $payload = [];
+
+        $this->postJson(action([VenueController::class, 'store'], $payload))
+            ->assertStatus(422)->assertJsonValidationErrors(['name', 'capacity']);
+
+        $payload = ['name' => 'Small Venue', 'capacity' => 100];
+
+        $this->postJson(action([VenueController::class, 'store'], $payload))
+            ->assertStatus(422)->assertJsonValidationErrors(['name']);
+
+    }
+
+    public function testCanCreateVenueSuccessfully(): void
+    {
+        $payload = [
+            'name' => 'Test Venue',
+            'capacity' => 100,
+        ];
+
+        $this->postJson(action([VenueController::class, 'store'], $payload))
+            ->assertStatus(201)
+            ->assertJson(fn(AssertableJson $json) => $json->has('data')->whereAll([
+                'data.name' => $payload['name'],
+                'data.capacity' => $payload['capacity'],
+            ])->etc())
+        ;
     }
 }
