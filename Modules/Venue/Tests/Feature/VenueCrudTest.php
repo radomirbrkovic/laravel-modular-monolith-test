@@ -42,12 +42,12 @@ class VenueCrudTest extends BaseTestCase
     {
         $payload = [];
 
-        $this->postJson(action([VenueController::class, 'store'], $payload))
+        $this->postJson(action([VenueController::class, 'store']), $payload)
             ->assertStatus(422)->assertJsonValidationErrors(['name', 'capacity']);
 
         $payload = ['name' => 'Small Venue', 'capacity' => 100];
 
-        $this->postJson(action([VenueController::class, 'store'], $payload))
+        $this->postJson(action([VenueController::class, 'store']), $payload)
             ->assertStatus(422)->assertJsonValidationErrors(['name']);
 
     }
@@ -59,7 +59,7 @@ class VenueCrudTest extends BaseTestCase
             'capacity' => 100,
         ];
 
-        $this->postJson(action([VenueController::class, 'store'], $payload))
+        $this->postJson(action([VenueController::class, 'store']), $payload)
             ->assertStatus(201)
             ->assertJson(fn(AssertableJson $json) => $json->has('data')->whereAll([
                 'data.name' => $payload['name'],
@@ -75,6 +75,21 @@ class VenueCrudTest extends BaseTestCase
             ->assertJson(fn(AssertableJson $json) => $json->has('data')->whereAll([
                 'data.name' => $venue->name,
                 'data.capacity' => $venue->capacity,
+            ])->etc());
+    }
+
+    public function testCanUpdateVenue(): void
+    {
+        $payload = [
+            'name' => 'Main Venue',
+            'capacity' => 150,
+        ];
+
+        $this->putJson(action([VenueController::class, 'update'], ['venue' => 1]), $payload)
+            ->assertStatus(200)
+            ->assertJson(fn(AssertableJson $json) => $json->has('data')->whereAll([
+                'data.name' => $payload['name'],
+                'data.capacity' => $payload['capacity'],
             ])->etc());
     }
 }

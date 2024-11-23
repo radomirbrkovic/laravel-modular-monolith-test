@@ -4,6 +4,7 @@ namespace Modules\Venue\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\Rule;
 
 class VenueRequest extends FormRequest
 {
@@ -15,7 +16,7 @@ class VenueRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:venues,name',
+            'name' => ['required', Rule::unique('venues')->ignore($this->route('venue'))],
             'capacity' => 'required|min:1',
         ];
     }

@@ -41,24 +41,13 @@ class VenueController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
+     * @param VenueRequest $request
+     * @param $id
+     * @return VenueResource
      */
-    public function edit($id)
+    public function update(VenueRequest $request, $id)
     {
-        return view('venue::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        return new VenueResource($this->service->update($id, $request->validated()));
     }
 
     /**
