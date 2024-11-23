@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Venue\Entities\Venue;
 use Modules\Venue\Http\Requests\Api\VenueRequest;
 use Modules\Venue\Services\VenueCrudService;
 use Modules\Venue\Transformers\VenueResource;
@@ -23,15 +24,6 @@ class VenueController extends Controller
         return VenueResource::collection($this->service->list());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
-    {
-        return view('venue::create');
-    }
-
 
     public function store(VenueRequest $request)
     {
@@ -40,13 +32,12 @@ class VenueController extends Controller
     }
 
     /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
+     * @param Venue $venue
+     * @return VenueResource
      */
-    public function show($id)
+    public function show(Venue $venue)
     {
-        return view('venue::show');
+        return new VenueResource($venue);
     }
 
     /**

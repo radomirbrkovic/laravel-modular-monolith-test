@@ -14,5 +14,5 @@ use Modules\Venue\Http\Controllers\Api\VenueController;
 |
 */
 
-Route::resource('venue', VenueController::class);
+Route::resource('venue', VenueController::class)->except(['create', 'edit']);
 

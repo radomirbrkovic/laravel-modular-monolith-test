@@ -64,7 +64,17 @@ class VenueCrudTest extends BaseTestCase
             ->assertJson(fn(AssertableJson $json) => $json->has('data')->whereAll([
                 'data.name' => $payload['name'],
                 'data.capacity' => $payload['capacity'],
-            ])->etc())
-        ;
+            ])->etc());
+    }
+
+    public function testCanShowVenue(): void
+    {
+        $venue = Venue::find(1);
+        $this->getJson(action([VenueController::class, 'show'], ['venue' => 1]))
+            ->assertStatus(200)
+            ->assertJson(fn(AssertableJson $json) => $json->has('data')->whereAll([
+                'data.name' => $venue->name,
+                'data.capacity' => $venue->capacity,
+            ])->etc());
     }
 }
