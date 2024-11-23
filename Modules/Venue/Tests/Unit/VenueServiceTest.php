@@ -57,4 +57,20 @@ class VenueServiceTest extends TestCase
         $this->assertEquals($data['name'], $venue->name);
         $this->assertEquals($data['capacity'], $venue->capacity);
     }
+
+    public function testCanFindVenueById(): void
+    {
+        $venueEntity = $this->makeModel([
+            'name' => 'Test venue',
+            'capacity' => 50,
+            'id' => 1
+        ]);
+
+        $this->repository->shouldReceive('find')->once()->andReturn($venueEntity);
+        $venue = $this->service->find(1);
+
+        $this->assertInstanceOf(Venue::class, $venue);
+        $this->assertEquals($venueEntity->name, $venue->name);
+        $this->assertEquals($venueEntity->capacity, $venue->capacity);
+    }
 }
