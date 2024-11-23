@@ -1,9 +1,10 @@
 <?php
 
-namespace Database\Seeders;
+namespace Modules\Venue\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class VenueSeeder extends Seeder
 {
@@ -12,6 +13,8 @@ class VenueSeeder extends Seeder
      */
     public function run(): void
     {
+        Schema::disableForeignKeyConstraints();
+        DB::table('venues')->truncate();
         DB::table('venues')->insert([
             [
                 'name' => 'Main Venue',
@@ -26,5 +29,6 @@ class VenueSeeder extends Seeder
                 'updated_at' => now()
             ]
         ]);
+        Schema::enableForeignKeyConstraints();
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Modules\Venue\Http\Controllers\Api\VenueController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,5 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/venue', function (Request $request) {
-    return $request->user();
-});
+Route::resource('venue', VenueController::class);
+
