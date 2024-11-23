@@ -56,4 +56,15 @@ abstract class BaseRepository
             return $entity;
         });
     }
+
+    /**
+     * @param Model $entity
+     * @return bool
+     */
+    public function delete(Model $entity): bool
+    {
+        return DB::transaction(function () use ($entity) {
+            return $entity->delete();
+        });
+    }
 }
