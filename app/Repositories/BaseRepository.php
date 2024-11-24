@@ -2,12 +2,13 @@
 
 namespace App\Repositories;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 abstract class BaseRepository
 {
-    public function __construct(private Model $model)
+    public function __construct(protected Model $model)
     {
 
     }
@@ -20,6 +21,13 @@ abstract class BaseRepository
         return $this->model;
     }
 
+    /**
+     * @return Collection
+     */
+    public function list(): Collection
+    {
+        return $this->model->all();
+    }
     /**
      * @param int $id
      * @return Model|null

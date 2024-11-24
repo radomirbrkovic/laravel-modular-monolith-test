@@ -8,10 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 interface CrudServiceInterface
 {
     /**
-     * @param array|null $data
      * @return Collection
      */
-    public function list(?array $data = null): Collection;
+    public function list(): Collection;
 
     /**
      * @param array $data

@@ -116,4 +116,14 @@ class EventCrudTest extends BaseTestCase
                 'data.ticket_sales_end_date' => $event->ticket_sales_end_date,
             ])->etc());
     }
+
+    public function testCanDelete(): void
+    {
+
+        $this->deleteJson(action([EventController::class, 'destroy'], ['event' => 2]))
+            ->assertStatus(204);
+
+        $event = Event::find(2);
+        $this->assertNull($event);
+    }
 }

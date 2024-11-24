@@ -16,9 +16,9 @@ class EventCrudService implements CrudServiceInterface
 
     }
 
-    public function list(?array $data = null): Collection
+    public function list(): Collection
     {
-        return $this->repository->getModel()->with('venue')->get();
+        return $this->repository->list();
     }
 
     public function create(array $data): Model
@@ -29,7 +29,7 @@ class EventCrudService implements CrudServiceInterface
 
     public function find(int $id): Model
     {
-        return $this->repository->getModel()->with('venue')->find($id);
+        return $this->repository->find($id);
     }
 
     public function update(int $id, array $data): Model

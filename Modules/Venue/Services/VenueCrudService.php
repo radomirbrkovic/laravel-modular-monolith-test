@@ -15,9 +15,9 @@ class VenueCrudService implements CrudServiceInterface
 
     }
 
-    public function list(?array $data = null): Collection
+    public function list(): Collection
     {
-        return $this->venueRepository->getModel()->get();
+        return $this->venueRepository->list();
     }
 
     public function create(array $data): Model

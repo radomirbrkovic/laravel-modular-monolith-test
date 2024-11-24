@@ -73,7 +73,7 @@ class EventServiceTest extends TestCase
             'available_tickets' => 150,
         ];
         $eventEntity = $this->makeModel($data);
-        $this->repository->shouldReceive('getModel')->once()->andReturn($eventEntity);
+        $this->repository->shouldReceive('find')->once()->andReturn($eventEntity);
         $event = $this->service->find(1);
 
         $this->assertInstanceOf(Event::class, $event);
@@ -95,7 +95,7 @@ class EventServiceTest extends TestCase
 
         $data['name'] = 'Test event - updated';
         $updatedEvent = $this->makeModel($data);
-        $this->repository->shouldReceive('getModel')->once()->andReturn($eventEntity);
+        $this->repository->shouldReceive('find')->once()->andReturn($eventEntity);
         $this->repository->shouldReceive('update')->once()->andReturn($updatedEvent);
         $event = $this->service->update($data['id'], $data);
 
@@ -117,7 +117,7 @@ class EventServiceTest extends TestCase
         ];
         $eventEntity = $this->makeModel($data);
 
-        $this->repository->shouldReceive('getModel')->once()->andReturn($eventEntity);
+        $this->repository->shouldReceive('find')->once()->andReturn($eventEntity);
         $this->repository->shouldReceive('delete')->once()->andReturn(true);
         $this->assertTrue($this->service->delete(1));
 
