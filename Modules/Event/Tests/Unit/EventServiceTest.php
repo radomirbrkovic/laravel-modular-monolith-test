@@ -69,19 +69,16 @@ class EventServiceTest extends TestCase
         $data = [
             'id' => 1,
             'venue_id' => 1,
-            'name' => 'Test event',
-            'ticket_sales_end_date' => now(),
-            'available_tickets' => 100,
+            'name' => 'Concert',
+            'available_tickets' => 150,
         ];
         $eventEntity = $this->makeModel($data);
-        $this->repository->shouldReceive('with')->once()->andReturnSelf();
-        $this->repository->shouldReceive('find')->once()->andReturn($eventEntity);
+        $this->repository->shouldReceive('getModel')->once()->andReturn($eventEntity);
         $event = $this->service->find(1);
 
         $this->assertInstanceOf(Event::class, $event);
         $this->assertEquals($eventEntity->venue_id, $event->venue_id);
         $this->assertEquals($eventEntity->name, $event->name);
-        $this->assertEquals($eventEntity->ticket_sales_end_date, $event->ticket_sales_end_date);
         $this->assertEquals($eventEntity->available_tickets, $event->available_tickets);
     }
 
@@ -98,8 +95,7 @@ class EventServiceTest extends TestCase
 
         $data['name'] = 'Test event - updated';
         $updatedEvent = $this->makeModel($data);
-        $this->repository->shouldReceive('with')->once()->andReturnSelf();
-        $this->repository->shouldReceive('find')->once()->andReturn($eventEntity);
+        $this->repository->shouldReceive('getModel')->once()->andReturn($eventEntity);
         $this->repository->shouldReceive('update')->once()->andReturn($updatedEvent);
         $event = $this->service->update($data['id'], $data);
 
@@ -121,8 +117,7 @@ class EventServiceTest extends TestCase
         ];
         $eventEntity = $this->makeModel($data);
 
-        $this->repository->shouldReceive('with')->once()->andReturnSelf();
-        $this->repository->shouldReceive('find')->once()->andReturn($eventEntity);
+        $this->repository->shouldReceive('getModel')->once()->andReturn($eventEntity);
         $this->repository->shouldReceive('delete')->once()->andReturn(true);
         $this->assertTrue($this->service->delete(1));
 

@@ -86,4 +86,17 @@ class EventCrudTest extends BaseTestCase
                 'data.ticket_sales_end_date' => $payload['ticket_sales_end_date'],
             ])->etc());
     }
+
+    public function testCanShowEvent(): void
+    {
+        $event = Event::with('venue')->find(1);
+
+        $this->getJson(action([EventController::class, 'show'], ['event' => $event->id]))
+            ->assertOk()->assertJson(fn(AssertableJson $json) => $json->has('data')->whereAll([
+                'data.event_name' => $event->name,
+                'data.venue_name' => $event->venue->name,
+                'data.available_tickets' => $event->available_tickets,
+                'data.ticket_sales_end_date' => $event->ticket_sales_end_date,
+            ])->etc());
+    }
 }

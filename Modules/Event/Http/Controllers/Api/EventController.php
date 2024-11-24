@@ -37,14 +37,14 @@ class EventController extends Controller
             ->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
+
     /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
+     * @param $id
+     * @return EventResource
      */
     public function show($id)
     {
-        return view('event::show');
+        return new EventResource($this->service->find($id));
     }
 
     /**

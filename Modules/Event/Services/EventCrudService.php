@@ -29,7 +29,7 @@ class EventCrudService implements CrudServiceInterface
 
     public function find(int $id): Model
     {
-        return $this->repository->with('venue')->find($id);
+        return $this->repository->getModel()->with('venue')->find($id);
     }
 
     public function update(int $id, array $data): Model
