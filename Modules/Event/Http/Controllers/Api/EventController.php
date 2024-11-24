@@ -4,7 +4,9 @@ namespace Modules\Event\Http\Controllers\Api;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Event\Http\Requests\Api\EventRequest;
 use Modules\Event\Services\EventCrudService;
 use Modules\Event\Transformers\EventResource;
 
@@ -24,23 +26,15 @@ class EventController extends Controller
         return EventResource::collection($this->service->list());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
-    {
-        return view('event::create');
-    }
 
     /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
+     * @param EventRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(EventRequest $request)
     {
-        //
+        return (new EventResource($this->service->create($request->validated())))
+            ->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**

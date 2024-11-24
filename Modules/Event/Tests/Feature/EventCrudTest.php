@@ -7,6 +7,7 @@ use Modules\Event\Database\Seeders\EventSeeder;
 use Modules\Event\Entities\Event;
 use Modules\Event\Http\Controllers\Api\EventController;
 use Modules\Venue\Database\Seeders\VenueSeeder;
+use Modules\Venue\Entities\Venue;
 use Tests\Feature\BaseTestCase;
 
 class EventCrudTest extends BaseTestCase
@@ -41,5 +42,48 @@ class EventCrudTest extends BaseTestCase
                 'data.0.ticket_sales_end_date' => 'string',
             ])->etc())
             ->assertJson(fn(AssertableJson $json) => $json->has('data')->whereAll($eventsData)->etc());
+    }
+
+    public function testCanCreateEventInvalidData(): void
+    {
+        $payload = [];
+        $this->postJson(action([EventController::class, 'store']), $payload)
+            ->assertStatus(422)->assertJsonValidationErrors(
+                [
+                    'name',
+                    'venue_id',
+                    'ticket_sales_end_date',
+                ]);
+
+        $payload = [
+            'name' => 'Test Event',
+            'venue_id' => 1000,
+            'ticket_sales_end_date' => '2020-12-31',
+        ];
+        $this->postJson(action([EventController::class, 'store']), $payload)
+            ->assertStatus(422)->assertJsonValidationErrors(
+                [
+                    'venue_id',
+                    'ticket_sales_end_date',
+                ]);
+    }
+
+    public function testCanCreateEventSuccessfully(): void
+    {
+        $venue = Venue::find(1);
+        $payload = [
+          'name' => 'Test Event',
+          'venue_id' => $venue->id,
+          'ticket_sales_end_date' => now()->addDays(10)->format('Y-m-d H:i:s'),
+        ];
+
+        $this->postJson(action([EventController::class, 'store']), $payload)
+            ->assertStatus(201)
+            ->assertJson(fn(AssertableJson $json) => $json->has('data')->whereAll([
+                'data.event_name' => $payload['name'],
+                'data.venue_name' => $venue->name,
+                'data.available_tickets' => $venue->capacity,
+                'data.ticket_sales_end_date' => $payload['ticket_sales_end_date'],
+            ])->etc());
     }
 }

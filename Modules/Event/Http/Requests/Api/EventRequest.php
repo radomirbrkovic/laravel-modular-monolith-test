@@ -16,7 +16,7 @@ class EventRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'venue_id' => 'required:exists:venues,id',
+            'venue_id' => 'required|exists:venues,id',
             'ticket_sales_end_date' => 'required|date_format:Y-m-d H:i:s',
         ];
     }
