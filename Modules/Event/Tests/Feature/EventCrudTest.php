@@ -1,0 +1,45 @@
+<?php
+
+namespace Modules\Event\Tests\Feature;
+
+use Illuminate\Testing\Fluent\AssertableJson;
+use Modules\Event\Database\Seeders\EventSeeder;
+use Modules\Event\Entities\Event;
+use Modules\Event\Http\Controllers\Api\EventController;
+use Modules\Venue\Database\Seeders\VenueSeeder;
+use Tests\Feature\BaseTestCase;
+
+class EventCrudTest extends BaseTestCase
+{
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->seed(VenueSeeder::class);
+        $this->seed(EventSeeder::class);
+    }
+
+    public function testCanListEvents(): void
+    {
+        $events = Event::with('venue')->get();
+        $eventsData = [];
+
+        foreach ($events as $key => $event) {
+            $eventsData["data.{$key}.id"] = $event->id;
+            $eventsData["data.{$key}.event_name"] = $event->name;
+            $eventsData["data.{$key}.venue_name"] = $event->venue->name;
+            $eventsData["data.{$key}.available_tickets"] = $event->available_tickets;
+            $eventsData["data.{$key}.ticket_sales_end_date"] = $event->ticket_sales_end_date;
+        }
+
+        $this->getJson(action([EventController::class, 'index']))
+            ->assertOk()
+            ->assertJson(fn(AssertableJson $json) => $json->has('data')->whereAllType([
+                'data.0.id' => 'integer',
+                'data.0.event_name' => 'string',
+                'data.0.venue_name' => 'string',
+                'data.0.available_tickets' => 'integer',
+                'data.0.ticket_sales_end_date' => 'string',
+            ])->etc())
+            ->assertJson(fn(AssertableJson $json) => $json->has('data')->whereAll($eventsData)->etc());
+    }
+}
