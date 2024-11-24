@@ -14,11 +14,19 @@ class EventRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required',
-            'venue_id' => 'required|exists:venues,id',
-            'ticket_sales_end_date' => 'required|date_format:Y-m-d H:i:s',
-        ];
+        if ($this->method() == 'POST') {
+            return [
+                'name' => 'required',
+                'venue_id' => 'required|exists:venues,id',
+                'ticket_sales_end_date' => 'required|date_format:Y-m-d H:i:s',
+            ];
+        } else {
+            return [
+                'name' => 'required',
+                'ticket_sales_end_date' => 'sometimes|date_format:Y-m-d H:i:s',
+            ];
+        }
+
     }
 
     /**

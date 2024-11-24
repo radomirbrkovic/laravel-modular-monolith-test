@@ -57,15 +57,15 @@ class EventController extends Controller
         return view('event::edit');
     }
 
+
     /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
+     * @param EventRequest $request
+     * @param $id
+     * @return EventResource
      */
-    public function update(Request $request, $id)
+    public function update(EventRequest $request, $id)
     {
-        //
+        return new EventResource($this->service->update($id, $request->validated()));
     }
 
     /**

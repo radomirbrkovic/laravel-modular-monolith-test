@@ -99,4 +99,21 @@ class EventCrudTest extends BaseTestCase
                 'data.ticket_sales_end_date' => $event->ticket_sales_end_date,
             ])->etc());
     }
+
+    public function testCanUpdateEvent(): void
+    {
+        $event = Event::with('venue')->find(1);
+        $payload = [
+            'name' => 'Test Event',
+        ];
+
+        $this->putJson(action([EventController::class, 'update'], ['event' => $event->id]), $payload)
+            ->assertOk()
+            ->assertJson(fn(AssertableJson $json) => $json->has('data')->whereAll([
+                'data.event_name' => $payload['name'],
+                'data.venue_name' => $event->venue->name,
+                'data.available_tickets' => $event->available_tickets,
+                'data.ticket_sales_end_date' => $event->ticket_sales_end_date,
+            ])->etc());
+    }
 }
