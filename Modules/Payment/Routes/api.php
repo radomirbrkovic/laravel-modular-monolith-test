@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use Modules\Payment\Http\Controllers\Api\TicketPurchaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +13,4 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/payment', function (Request $request) {
-    return $request->user();
-});
+Route::post('events/{event_id}/purchase', [TicketPurchaseController::class, 'store'])->name('events.purchase.store');

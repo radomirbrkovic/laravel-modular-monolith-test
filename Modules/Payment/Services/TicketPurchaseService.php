@@ -6,6 +6,7 @@ use App\Services\Interfaces\CrudServiceInterface;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
 use Modules\Payment\Exceptions\EmailAlreadyUsedException;
 use Modules\Payment\Exceptions\EventCloseException;
@@ -32,6 +33,10 @@ class TicketPurchaseService
     public function create(array $data): Model
     {
         $event = $this->repository->getEventById($data['event_id']);
+
+        if(!$event) {
+            throw new ModelNotFoundException("Event not found");
+        }
 
         if (Carbon::parse($event->ticket_sales_end_date) < now()) {
             throw new EventCloseException();

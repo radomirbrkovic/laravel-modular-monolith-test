@@ -35,9 +35,9 @@ class TickerPurchaseRepository extends BaseRepository
 
     /**
      * @param int $id
-     * @return Model
+     * @return Model|null
      */
-    public function getEventById(int $id): Model
+    public function getEventById(int $id): ?Model
     {
         return Event::with('ticketPurchases')->find($id);
     }
