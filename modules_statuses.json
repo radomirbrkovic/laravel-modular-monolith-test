@@ -1,4 +1,5 @@
 {
     "Venue": true,
-    "Event": true
+    "Event": true,
+    "Payment": true
 }
