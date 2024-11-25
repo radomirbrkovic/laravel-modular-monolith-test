@@ -4,6 +4,8 @@ namespace Modules\Event\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Payment\Entities\TicketPurchase;
 use Modules\Venue\Entities\Venue;
 
 class Event extends Model
@@ -26,6 +28,14 @@ class Event extends Model
     public function venue(): BelongsTo
     {
         return $this->belongsTo(Venue::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function ticketPurchases(): HasMany
+    {
+        return $this->hasMany(TicketPurchase::class);
     }
 
 }
