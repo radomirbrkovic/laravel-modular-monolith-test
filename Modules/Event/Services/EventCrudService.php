@@ -6,7 +6,6 @@ use App\Services\Interfaces\CrudServiceInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Event\Repositories\EventRepository;
-use Modules\Venue\Entities\Venue;
 
 class EventCrudService implements CrudServiceInterface
 {

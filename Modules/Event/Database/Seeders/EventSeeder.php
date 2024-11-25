@@ -5,6 +5,7 @@ namespace Modules\Event\Database\Seeders;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class EventSeeder extends Seeder
 {
@@ -13,6 +14,10 @@ class EventSeeder extends Seeder
      */
     public function run(): void
     {
+        Schema::disableForeignKeyConstraints();
+        DB::table('events')->truncate();
+        Schema::enableForeignKeyConstraints();
+
         $mainVenue = DB::table('venues')->where('name', 'Main Venue')->first();
         $smallVenue = DB::table('venues')->where('name', 'Small Venue')->first();
 
